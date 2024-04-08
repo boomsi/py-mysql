@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "blog"
+name = "app"
 version = "0.1.0"
 description = ""
 authors = ["libo <libo@huanqiu.com>"]
@@ -17,4 +17,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-dev = "app:main"
+start = "app.main:start"
