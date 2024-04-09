@@ -1,21 +1,36 @@
-import functools
 from flask import Blueprint, request
+from ..utils.mysql import mysql
 
 user_bp = Blueprint('user', __name__, url_prefix='/user')
 
-@user_bp('/login', methods=('POST',))
+@user_bp.route('/registry', methods=('POST',))
 def login():
-    username = request.form['username']
-    password = request.form['password']
-    captcha = request.form['captcha']
-
-    error = None
-
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+    captcha = data.get('captcha')
     if not username:
-        error = 'Username is invalide'
+        return 'Username is invalide'
     if not password:
-        error = 'Password is invalide'
+        return 'Password is invalide'
     if not captcha:
-        error = 'Captcha is invalide'
+        return 'Captcha is invalide'
+
+    user = mysql.fetch_one(
+        'SELECT * FROM user WHERE username = %s',
+        (username,)
+    )
+    
+    if user:
+        return 'User already exists'
+
+    user = mysql.insert_one(
+        'INSERT INTO user (username, password) VALUES (%s, %s)',
+        (username, password)
+    )
+
+    print(user)
+    
+    return str(user)
 
 

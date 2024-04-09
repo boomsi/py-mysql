@@ -1,11 +1,11 @@
 from flask import Flask
-from routes.user import user_bp
+from app.routes.user import user_bp
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return 'Hello, World!'
+    return 'H'
 
 app.register_blueprint(user_bp)
 
