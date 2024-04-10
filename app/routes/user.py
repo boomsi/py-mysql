@@ -1,20 +1,23 @@
 from flask import Blueprint, request
+from werkzeug.security import generate_password_hash, check_password_hash
 from ..utils.mysql import mysql
+from ..utils.base import Resp
+from ..utils.finish_resp import finish_resp
 
 user_bp = Blueprint('user', __name__, url_prefix='/user')
 
+def registry_validate(func):
+    pass
+
 @user_bp.route('/registry', methods=('POST',))
-def login():
+def registry():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
-    captcha = data.get('captcha')
     if not username:
-        return 'Username is invalide'
+        return finish_resp(Resp(status_code=0, message='Username is invalide'))
     if not password:
-        return 'Password is invalide'
-    if not captcha:
-        return 'Captcha is invalide'
+        return finish_resp(Resp(status_code=0, message='Password is invalide'))
 
     user = mysql.fetch_one(
         'SELECT * FROM user WHERE username = %s',
@@ -22,15 +25,35 @@ def login():
     )
     
     if user:
-        return 'User already exists'
+        return finish_resp(Resp(status_code=0, message='User already exists'))
 
     user = mysql.insert_one(
         'INSERT INTO user (username, password) VALUES (%s, %s)',
-        (username, password)
+        (username, generate_password_hash(password))
     )
 
-    print(user)
+    return finish_resp(Resp(data=user))
+
+@user_bp.route('/login', methods=('POST',))
+def login():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
     
-    return str(user)
+    if not username:
+        return finish_resp(Resp(status_code=0, message='Username is invalide'))
+    if not password:
+        return finish_resp(Resp(status_code=0, message='Password is invalide'))
 
+    user = mysql.fetch_one(
+        'SELECT * FROM user WHERE username = %s',
+        (username,)
+    )
+    if not user:
+        return finish_resp(Resp(status_code=0, message='User does not exist'))
 
+    if not check_password_hash(user.get('password'), password):
+        return finish_resp(Resp(status_code=0, message='Password is wrong'))
+    
+    del user['password']
+    return finish_resp(Resp(data=user))

@@ -6,3 +6,14 @@ CREATE TABLE `user`  (
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 )
+
+-- CREATE TABLE `post`  (
+--     `id` INT(11) NOT NULL AUTO_INCREMENT,
+--     `title` VARCHAR(255) NOT NULL,
+--     `content` TEXT NOT NULL,
+--     `user_id` INT(11) NOT NULL,
+--     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+--     PRIMARY KEY (`id`),
+--     FOREIGN KEY (`user_id`) REFERENCES `user`(`id`)
+-- )
