@@ -105,3 +105,26 @@ a1 = generate_password_hash('123')
 a2 = generate_password_hash('123')
 
 print(a1 == a2)
+
+
+print(isinstance(a, object))
+
+
+os.system('clear')
+
+class AAA:
+    _a = 1
+
+    @property
+    def name(self):
+        return self._a
+    
+    @name.setter
+    def name(self, value):
+        self._a = value
+
+aa = AAA()
+print(aa.name)
+aa.name = 2
+print(aa.name)
+

@@ -3,21 +3,16 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from ..utils.mysql import mysql
 from ..utils.base import Resp
 from ..utils.finish_resp import finish_resp
+from ..utils.params_validate import params_validate
 
 user_bp = Blueprint('user', __name__, url_prefix='/user')
 
-def registry_validate(func):
-    pass
-
 @user_bp.route('/registry', methods=('POST',))
+@params_validate({'username': str, 'password': str})
 def registry():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
-    if not username:
-        return finish_resp(Resp(status_code=0, message='Username is invalide'))
-    if not password:
-        return finish_resp(Resp(status_code=0, message='Password is invalide'))
 
     user = mysql.fetch_one(
         'SELECT * FROM user WHERE username = %s',
@@ -35,15 +30,11 @@ def registry():
     return finish_resp(Resp(data=user))
 
 @user_bp.route('/login', methods=('POST',))
+@params_validate({'username': str, 'password': str})
 def login():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
-    
-    if not username:
-        return finish_resp(Resp(status_code=0, message='Username is invalide'))
-    if not password:
-        return finish_resp(Resp(status_code=0, message='Password is invalide'))
 
     user = mysql.fetch_one(
         'SELECT * FROM user WHERE username = %s',
