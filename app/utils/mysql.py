@@ -1,3 +1,4 @@
+import pprint
 import pymysql.cursors
 
 class Mysql():
@@ -15,8 +16,18 @@ class Mysql():
                 cursor.execute(f'CREATE DATABASE IF NOT EXISTS {self.database}')
                 with open('app/utils/schema.sql', 'r', encoding='utf8') as f:
                     cursor.execute(f'USE {self.database}')
-                    cursor.execute(f.read())
+                    content = f.readlines()
+                    sql = ['']
+                    for line in content:
+                        if line == '\n':
+                            sql.append('')
+                        else:
+                            sql[-1] += line
+                    for s in sql:
+                        cursor.execute(s)
             else:
+                # cursor.execute(f'DROP database {self.database};')
+                # self.init()
                 self.connection.select_db(self.database)
 
     def fetch_one(self, sql: str, args: tuple):
