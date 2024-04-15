@@ -14,7 +14,7 @@ def params_validate(data: dict):
         def wrapper(*args, **kwargs):
             req_data = request.get_json()
             for key, value in data.items():
-                if (value.required and not req_data.get(key)) or not isinstance(req_data.get(key), value):
+                if (value['required'] and not req_data.get(key)) or not isinstance(req_data.get(key), value['type']):
                     return finish_resp(Resp(status_code=0, message=f'{key} is invalide'))
             return func(*args, **kwargs)
         return wrapper

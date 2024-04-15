@@ -15,7 +15,10 @@ from ..utils.const import JWT_SECRET
 user_bp = Blueprint('user', __name__, url_prefix='/api/user')
 
 @user_bp.route('/registry', methods=('POST',))
-@params_validate({'username': str, 'password': str})
+@params_validate(dict(
+    username=dict(type=str, required=True),
+    password=dict(type=str, required=True)
+))
 def registry():
     data = request.get_json()
     username = data.get('username')
@@ -35,7 +38,10 @@ def registry():
     return finish_resp(Resp(data=user))
 
 @user_bp.route('/login', methods=('POST',))
-@params_validate({'username': str, 'password': str})
+@params_validate(dict(
+    username=dict(type=str, required=True),
+    password=dict(type=str, required=True)
+))
 def login():
     data = request.get_json()
     username = data.get('username')
