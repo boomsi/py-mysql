@@ -1,7 +1,7 @@
 from flask import request, g
 import jwt
 from ..utils.finish_resp import finish_resp
-from ..utils.base import Resp
+from ..utils.resp import Resp
 from ..utils.const import AUTH_WHITE_LIST, JWT_SECRET
 
 

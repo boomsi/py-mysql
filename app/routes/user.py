@@ -4,7 +4,7 @@ import jwt
 import json
 from datetime import datetime
 from ..utils.mysql import mysql
-from ..utils.base import Resp
+from ..utils.resp import Resp
 from ..utils.finish_resp import finish_resp
 from ..utils.params_validate import params_validate
 from ..utils.redis import redis

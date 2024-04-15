@@ -39,6 +39,16 @@ class Mysql():
         except Exception as e:
             print(e.with_traceback())
             return str(e)
+        
+    def fetch_all(self, sql: str, args: tuple):
+        try:
+            with self.connection.cursor() as cursor:
+                cursor.execute(sql, tuple(args))
+                result = cursor.fetchall()
+            return result
+        except Exception as e:
+            print(e.with_traceback())
+            return str(e)
 
 
     def insert_one(self, sql: str, args: tuple):
