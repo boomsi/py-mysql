@@ -10,9 +10,9 @@ registry = request(
 )
 print(registry)
 
-# login = request(
-#     f'{HOST}/user/login',
-#     method='POST',
-#     data=dict(username='test', password='test')
-# )
-# print(login)
+login = request(
+    f'{HOST}/user/login',
+    method='POST',
+    data=dict(username='test', password='test')
+)
+print(login)

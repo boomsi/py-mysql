@@ -9,7 +9,7 @@ app = Flask(__name__)
 def index():
     return 'H'
 
-app.before_request(before_request)
+# app.before_request(before_request)
 
 app.register_blueprint(user_bp)
 app.register_blueprint(post_bp)
