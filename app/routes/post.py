@@ -8,14 +8,13 @@ post_bp = Blueprint('post', __name__, url_prefix='/api/post')
 
 
 @post_bp.route('/list', methods=('GET',))
-@params_validate({
-    'page': {'type': int, 'required': False, 'default': 1},
-    'size': {'type': int, 'required': False, 'default': 10},
-})
+@params_validate(dict(
+    page=dict(type=int, required=False),
+    size=dict(type=int, required=False)
+))
 def post_list():
-    print(1)
-    page = request.args.get('page', 1)
-    size = request.args.get('size', 10)
+    page = int(request.args.get('page', 1))
+    size = int(request.args.get('size', 10))
     res = mysql.fetch_all(
         'SELECT * FROM post LIMIT %s, %s',
         (page, size)

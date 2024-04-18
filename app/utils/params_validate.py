@@ -21,8 +21,8 @@ def params_validate(data: dict):
             
             for key, item in data.items():
                 try:
-                    value = params.get(key)
-                    if (item['required'] and not params.get(key)) or not isinstance(params.get(key), item['type']):
+                    value = int(params.get(key)) if item['type'] == int else params.get(key)
+                    if (item['required'] and not value) or not isinstance(value, item['type']):
                         return finish_resp(Resp(status_code=0, message=f'{key} is invalide'))
                 except ValueError:
                     return finish_resp(Resp(status_code=0, message=f'{key} is invalide'))
