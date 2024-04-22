@@ -54,7 +54,8 @@ class Mysql():
     def insert_one(self, sql: str, args: tuple):
         try:
             with self.connection.cursor() as cursor:
-                cursor.execute(sql, args)
+                print(args, '---')
+                cursor.execute(sql, tuple(args))
                 self.connection.commit()
             return cursor.lastrowid
         except Exception as e:

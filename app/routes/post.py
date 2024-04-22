@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, g
 from ..utils.params_validate import params_validate
 from ..utils.mysql import mysql
 from ..utils.finish_resp import finish_resp
@@ -16,14 +16,28 @@ def post_list():
     page = int(request.args.get('page', 1))
     size = int(request.args.get('size', 10))
     res = mysql.fetch_all(
-        'SELECT * FROM post LIMIT %s, %s',
-        (page, size)
+        'SELECT * FROM post LIMIT %s',
+        (page * size,)
     )
     return finish_resp(Resp(data=res))
 
-@post_bp.route('/create')
+@post_bp.route('/create', methods=['POST'])
+@params_validate(dict(
+    title=dict(type=str, required=True),
+    content=dict(type=str, required=True)
+))
 def post_create():
-    pass
+    data = request.get_json()
+    title = data.get('title')
+    content = data.get('content')
+    user_id = g.user.get('id')
+
+    res = mysql.insert_one(
+        'INSERT INTO post (title, content, user_id) VALUES (%s, %s, %s)',
+        (title, content, user_id)
+    )
+    return finish_resp(Resp(data=res))
+
 
 @post_bp.route('/update/<int:id>', methods=['PUT'])
 def post_update():
