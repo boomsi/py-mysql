@@ -50,11 +50,9 @@ class Mysql():
             print(e.with_traceback())
             return str(e)
 
-
-    def insert_one(self, sql: str, args: tuple):
+    def edit_one(self, sql: str, args: tuple):
         try:
             with self.connection.cursor() as cursor:
-                print(args, '---')
                 cursor.execute(sql, tuple(args))
                 self.connection.commit()
             return cursor.lastrowid
