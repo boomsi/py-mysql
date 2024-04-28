@@ -1,5 +1,13 @@
 ### Web API
 
+- Flask
+- MySQL
+
+
+Incudes:
+- Login and Register
+- Mysql CURD
+
 
 #### RUN
 
